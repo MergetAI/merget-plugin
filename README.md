@@ -197,8 +197,8 @@ custom servers by URL and headers only: see
 agy plugin install https://github.com/MergetAI/merget-plugin
 ```
 
-If the plugin's `merget` server does not appear after the install, add it by
-hand as the next paragraph describes.
+`agy plugin list` then shows the four skills and the `merget` server. If the
+server does not appear, add it by hand as the next paragraph describes.
 
 Server only: the MCP Store, or `~/.gemini/config/mcp_config.json` with
 `{ "mcpServers": { "merget": { "serverUrl": "https://sema.merget.ai/mcp" } } }`,
@@ -292,8 +292,8 @@ description and addresses; `node packaging/build.mjs` writes every manifest
 from it: `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` and
 `.mcp.json` for Claude Code and the clients that read its format; `plugin.json`
 and `mcp.json` for Agent Plugins 1.0 (Codex, Cursor, VS Code, Copilot, Kiro);
-`.antigravity-plugin/plugin.json` for Antigravity; `server.json` for the MCP
-Registry. The skills live under `skills/<name>/`.
+`.antigravity-plugin/plugin.json` and `mcp_config.json` for Antigravity;
+`server.json` for the MCP Registry. The skills live under `skills/<name>/`.
 
 `node packaging/build.mjs --check` fails when a manifest is out of date, the
 CHANGELOG heading disagrees with the version, a skill breaks the Agent Skills

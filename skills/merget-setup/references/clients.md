@@ -72,7 +72,7 @@ Cursor takes Agent Plugins (root `plugin.json`) from its marketplace and, for Te
 
 ## Google Antigravity and Gemini CLI
 
-- **Install**: `agy plugin install https://github.com/MergetAI/merget-plugin` (root `plugin.json`). Antigravity namespaces a plugin's MCP tools as `<plugin-name>_<server-name>`, so `merget_merget`. A plugin that signs in with OAuth installs enabled and prompts in the browser when its server connects.
+- **Install**: `agy plugin install https://github.com/MergetAI/merget-plugin` (reads `.antigravity-plugin/plugin.json` and the server from `mcp_config.json`; `agy plugin list` shows the four skills and the `merget` server). Antigravity namespaces a plugin's MCP tools as `<plugin-name>_<server-name>`, so `merget_merget`. A plugin that signs in with OAuth installs enabled and prompts in the browser when its server connects.
 - **Server by hand**: `~/.gemini/config/mcp_config.json`: `{"mcpServers": {"merget": {"serverUrl": "https://sema.merget.ai/mcp"}}}`, or Settings → **Customizations** → **Add MCP** (the MCP Store).
 - **Sign in**, and **again**: Agent settings → **Customizations** → **Authenticate** next to the server → sign in in the browser → paste the code → **Submit**. **Reload**: the refresh button in Customizations; Antigravity CLI `/mcp` reloads the configurations.
 - **Update**: no command is documented; plugins installed in the Antigravity app update by themselves and show in the CLI's Installed tab.

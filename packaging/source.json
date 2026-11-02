@@ -17,6 +17,7 @@
     "github"
   ],
   "listing": {
+    "documentationUrl": "https://sema.merget.ai/docs/coding-agents",
     "icon": "./assets/logo.png",
     "supportUrl": "https://sema.merget.ai/docs/help"
   },
@@ -41,5 +42,5 @@
     "What is waiting in the merge queue?"
   ],
   "summary": "Merget for coding agents: set up the merge queue, operate it, and read its findings and code graphs.",
-  "version": "0.8.1"
+  "version": "0.8.2"
 }

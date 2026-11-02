@@ -32,6 +32,23 @@ names or values only:
 The version header became `Merget-Api-Version` at the same time;
 `Sema-Api-Version` comes beside it until a later Merget release drops it.
 
+## 0.8.2 — 2026-11-02
+
+Antigravity gets the server. Needs no particular Merget release.
+
+- **`mcp_config.json`.** A new generated file,
+  `{"mcpServers": {"merget": {"serverUrl": "https://sema.merget.ai/mcp"}}}`,
+  the only file Antigravity reads a plugin's servers from: with 0.8.1,
+  `agy plugin install https://github.com/MergetAI/merget-plugin` (agy 1.4.12)
+  installed the four skills and no server. Now it installs both, as
+  `agy plugin list` shows. Other clients do not read the file.
+- **Documentation link.** `.claude-plugin/plugin.json` gains
+  `documentationUrl`, `https://sema.merget.ai/docs/coding-agents` (the docs'
+  "Install in your coding agent" page, live since 2026-11-01).
+- **merget-setup's client notes** say Antigravity reads
+  `.antigravity-plugin/plugin.json` and `mcp_config.json`, not the root
+  `plugin.json`.
+
 ## 0.8.1 — 2026-10-30
 
 Ready for the directories. Needs no particular Merget release: the server is
