@@ -5,9 +5,10 @@
   },
   "description": "Connects your coding agent to Merget, a semantic merge queue for GitHub: set it up, operate it, read a pull request's findings and verdict, query code graphs.",
   "displayName": "Merget",
+  "documentationUrl": "https://sema.merget.ai/docs/coding-agents",
   "homepage": "https://sema.merget.ai",
   "icon": "./assets/logo.png",
   "name": "merget",
   "supportUrl": "https://sema.merget.ai/docs/help",
-  "version": "0.8.1"
+  "version": "0.8.2"
 }

@@ -110,7 +110,8 @@ function targets() {
         keywords,
         ...licensed,
       },
-      // Antigravity reads the root manifest too, so it must satisfy both.
+      // Antigravity reads the root manifest when `.antigravity-plugin/` is
+      // absent (a copy without it), so it must satisfy both.
       validateWith: ["agentPluginsPlugin", "antigravityPlugin"],
     },
     {
@@ -140,6 +141,15 @@ function targets() {
         ...prompts,
       },
       validateWith: ["antigravityPlugin"],
+    },
+    {
+      // Antigravity's own server file. With `.antigravity-plugin/plugin.json`
+      // present, agy (1.4.12) loads a plugin's servers from this file only:
+      // `agy plugin validate` reports `.mcp.json` and `mcp.json` as never
+      // loaded, and an install without it carries the skills and no server.
+      path: "mcp_config.json",
+      data: { mcpServers: { [mcp.name]: { serverUrl: mcp.url } } },
+      validateWith: [],
     },
     {
       // The registry caps `description` at 100 characters: that is what the

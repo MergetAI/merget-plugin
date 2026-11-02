@@ -50,10 +50,10 @@ landing on `main`; CI tags it and publishes it.
 
 CI cannot open a browser or run every client. Before announcing a release:
 
-- `agy plugin validate --strict .` where Antigravity's CLI is installed. It
-  decides whether `logo` in `.antigravity-plugin/plugin.json` resolves from
-  the plugin root (what we emit) or from the manifest's folder, and whether
-  the root `plugin.json` and `mcp.json` sit well beside it.
+- `agy plugin validate --strict --json .`, `agy plugin install ./` and
+  `agy plugin list --json` where Antigravity's CLI is installed (on Linux, in
+  a scratch `HOME`): four skills and one `merget` server, and no warnings
+  beyond the three the Antigravity section below expects.
 - Sign in through the browser from each client, with the commands the README
   gives: Claude Code, Codex, Copilot CLI, VS Code, Cursor, Devin, Kiro,
   Antigravity, Gemini CLI, Amp, Warp, OpenCode, Replit, claude.ai or Claude
@@ -63,6 +63,14 @@ CI cannot open a browser or run every client. Before announcing a release:
 - Bump a copy's version and watch one plugin client update it.
 - On the consent page, check the **Known client** badge still names the
   trusted hosts.
+
+Last verified (keep one line per client, newest result):
+
+| Client | Version | Date | Result |
+| --- | --- | --- | --- |
+| Claude Code | 2.1.316 | 2026-11-01 | `claude plugin marketplace add MergetAI/merget-plugin` and `claude plugin install merget@merget-queue` install 0.8.1 with four skills and one `merget` server; browser sign-in, then the `merget_*` tools answer. |
+| Antigravity CLI (`agy`) | 1.4.12 | 2026-11-02 | `agy plugin validate --json .` loads `.antigravity-plugin/plugin.json`, four skills and one server (from `mcp_config.json`, new in 0.8.2; without it, none); `agy plugin install` from a local copy and from `https://github.com/MergetAI/merget-plugin` installs into `~/.gemini/config/plugins/merget`, and `agy plugin list --json` shows the four skills and `merget`. Sign-in not run (needs the Antigravity app). |
+| Codex CLI | 0.162.1 | 2026-11-02 | `codex mcp add merget --url https://sema.merget.ai/mcp`, then `codex mcp login merget`: signs in as `https://chatgpt.com/oauth/codex/client.json` (the shared client document) with all six scopes; `codex exec` calls `merget_status`, which reports the organization `ready`. |
 
 ## One-time setup for the MCP Registry
 
@@ -298,21 +306,23 @@ Before the form, the docs want `agy plugin validate --strict .` to exit with
 no errors and no warnings, a complete `.antigravity-plugin/plugin.json`
 (`name`, `displayName`, `description` of 120–160 characters, `version`
 raised every release, `logo`, `suggestedPrompts`, `author` as `{name, url}`),
-a README and the bundled logo. `build.mjs` emits all of that. Two things only
-a real run settles, so run it on Linux in a scratch home
-(`curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --dir <dir>`,
-then `agy plugin validate --strict --json .`, `agy plugin install ./` and
-`agy plugin list --json`, expecting four skills and one server):
+a README and the bundled logo. `build.mjs` emits all of that, and
+`mcp_config.json` since 0.8.2.
 
-- which file the CLI reads the server from. The docs say
-  `<plugin-root>/mcp.json`; three partner repositories (Cloudflare,
-  Dynatrace, ContextStream) report that agy 1.4.7–1.4.11 read only
-  `mcp_config.json` (`{"mcpServers": {"merget": {"serverUrl": "…"}}}`) and
-  warn that `mcp.json` is ignored. If the run agrees with them, add
-  `mcp_config.json` as a `build.mjs` target.
-- whether `--strict` still warns about `.mcp.json` and `mcp.json` sitting in a
-  multi-client repository (Cloudflare's run says it does). If so, submit with
-  those warnings recorded in the form's description.
+What agy 1.4.12 does with this repository (2026-11-02, Linux, scratch home):
+
+- It reads the manifest `.antigravity-plugin/plugin.json` and a plugin's
+  servers from `mcp_config.json` only (`{"mcpServers": {"merget":
+  {"serverUrl": "…"}}}`), as Cloudflare's, Dynatrace's and ContextStream's
+  repositories reported; without that file the install carried the skills
+  and no server.
+- `--strict` fails on three warnings that a repository serving every client
+  cannot avoid: `.mcp.json` ("Claude Code's file name"), `mcp.json` (read
+  only for Agent Plugins plugins) and the root `plugin.json` (ignored, since
+  `.antigravity-plugin/plugin.json` takes precedence). Each file serves
+  another client, so submit with those three named in the form's plugin
+  description. A clean `--strict` would take a separate Antigravity bundle
+  in a subfolder, with copies of the skills; not worth it unless Google asks.
 
 ### OpenAI's directory and the MCP Registry
 
@@ -334,17 +344,16 @@ schema pair from `--validate`.
   emits it into every manifest that takes a license), add `license:` to
   each skill's frontmatter, and make CI's directory-profile step blocking.
 - **Directory listing fields.** `.claude-plugin/plugin.json` now carries
-  `displayName`, `icon` and `supportUrl` (`https://sema.merget.ai/docs/help`).
+  `displayName`, `icon`, `supportUrl` (`https://sema.merget.ai/docs/help`)
+  and, since 0.8.2, `documentationUrl`.
   Still to add to `listing` in `source.json` once their pages load:
   `privacyPolicyUrl` (`https://merget.ai/legal/privacy-statement`) and
   `termsOfServiceUrl` (`https://merget.ai/legal/terms-of-service`), written
   in MergetAI/merget-web (`src/legal/`) but not served, since `merget.ai`
-  still redirects every `/legal/*` path to its home page; and
-  `documentationUrl`, the docs' "Install in your coding agent" page, once it
-  is live. Security is `https://sema.merget.ai/docs/security`, live.
-- **`.cursor-plugin/plugin.json`** and **`mcp_config.json`**: two more
-  generated files, each added only when its directory's test asks for it
-  (see Submissions).
+  still redirects every `/legal/*` path to its home page. Security is
+  `https://sema.merget.ai/docs/security`, live.
+- **`.cursor-plugin/plugin.json`**: one more generated file, added only if
+  Cursor's test asks for it (see Submissions).
 - **Registry description.** `server.json` takes the 100-character `summary`
   from `source.json`, not the description, because the registry's schema caps
   it there.
