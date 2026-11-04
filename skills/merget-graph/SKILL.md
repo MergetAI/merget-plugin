@@ -1,6 +1,7 @@
 ---
 name: merget-graph
 description: Queries Merget's code property graphs of any commit in a repository where Merget is installed — symbols in a file, callers and callees, def-use chains, program dependence slices, the graph diff between two commits, a finding's slice, and a PR side's intent — through the `merget_graph_*` MCP tools. Use when the user asks what calls or is called by a function, where a variable is defined or used, what a change reaches or depends on, what will break if a PR merges, why a Merget finding exists, what a PR or its target branch actually changed at the symbol level, for a slice or dependence context around a line, or for callers/callees/def-use/slice/graph diff on a commit, branch, or `pr:N:head`/`pr:N:base`/`pr:N:merge` revision; also use to confirm a syntactic Merget finding before acting on it.
+license: Apache-2.0
 compatibility: "Needs Merget's MCP server (merget, https://sema.merget.ai/mcp) connected and signed in."
 ---
 

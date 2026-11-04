@@ -8,7 +8,10 @@
   "documentationUrl": "https://sema.merget.ai/docs/coding-agents",
   "homepage": "https://sema.merget.ai",
   "icon": "./assets/logo.png",
+  "license": "Apache-2.0",
   "name": "merget",
+  "privacyPolicyUrl": "https://merget.ai/legal/privacy-statement",
   "supportUrl": "https://sema.merget.ai/docs/help",
-  "version": "0.8.2"
+  "termsOfServiceUrl": "https://merget.ai/legal/api-terms",
+  "version": "0.8.3"
 }

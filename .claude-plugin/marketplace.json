@@ -16,9 +16,10 @@
       "category": "development",
       "description": "Connects your coding agent to Merget, a semantic merge queue for GitHub: set it up, operate it, read a pull request's findings and verdict, query code graphs.",
       "homepage": "https://sema.merget.ai",
+      "license": "Apache-2.0",
       "name": "merget",
       "source": "./",
-      "version": "0.8.2"
+      "version": "0.8.3"
     }
   ]
 }
