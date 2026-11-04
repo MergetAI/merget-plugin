@@ -20,6 +20,7 @@ landing on `main`; CI tags it and publishes it.
    node packaging/build.mjs --validate
    for s in skills/*/; do npx -y skills-ref@0.1.5 validate "$s"; done
    claude plugin validate --strict .
+   claude plugin validate . --profile directory
    ```
 
    `--check` also rejects a client-specific tool prefix outside
@@ -125,7 +126,9 @@ written. Nothing here is submitted by CI; every step below is a person's.
   Terms (§3.3) allow permissive licences only (MIT, BSD, Apache-2.0; no GPL,
   LGPL or AGPL). Anthropic's directory refuses a plugin with neither a
   `LICENSE` file nor `license` in `plugin.json` (`LICENSE_MISSING`).
-  Antigravity recommends `license`; Devin does not ask.
+  Antigravity recommends `license`; Devin does not ask. Since 0.8.3 the
+  repository is Apache-2.0: `LICENSE`, `NOTICE`, `license` in
+  `packaging/source.json` and in each skill's frontmatter.
 - **Privacy policy and terms pages that load.** Cursor's Publisher Terms
   (§4.2) make the publisher warrant that both are visible to everyone who
   installs through the marketplace. Anthropic's Software Directory Policy
@@ -133,8 +136,10 @@ written. Nothing here is submitted by CI; every step below is a person's.
   the connector submission asks for its URL, and the directory reads
   `privacyPolicyUrl` from `.claude-plugin/plugin.json`. Devin's and
   Antigravity's intakes do not ask, though accepted Devin submissions listed
-  both. Today `merget.ai/legal/*` redirects to the home page (see Open
-  items).
+  both. Since 0.8.3 `.claude-plugin/plugin.json` carries `privacyPolicyUrl`
+  (`https://merget.ai/legal/privacy-statement`) and `termsOfServiceUrl`
+  (`https://merget.ai/legal/api-terms`); check that both pages load before
+  submitting (see Open items).
 - **The logo.** `assets/logo.svg` is a 128×128 square with the mark
   centred, 12 px of padding at the sides and 19 px above and below, which
   is what Antigravity requires
@@ -173,9 +178,9 @@ through the portal and is a separate ask to an Anthropic partner contact,
 and the `claude-code-hint` CLI prompt exists only for plugins listed there.
 
 1. `claude plugin validate . --profile directory` locally (Claude Code
-   2.1.314 has the flag; CI runs it as an advisory step). Today it refuses on
-   `LICENSE_MISSING` and warns on `PRIVACY_URL_MISSING`; both go with the
-   items above. The portal adds what the CLI cannot: a taken name, file
+   2.1.314 has the flag; CI runs it as a blocking step since 0.8.3). It
+   passes since 0.8.3 (before, `LICENSE_MISSING` and `PRIVACY_URL_MISSING`).
+   The portal adds what the CLI cannot: a taken name, file
    limits, symlinks, launchers and the safety scan. The README is the
    listing's long description and must be at least 40 words outside code
    blocks.
@@ -337,21 +342,16 @@ schema pair from `--validate`.
 
 ## Open items
 
-- **LICENSE.** None chosen yet, and it gates two submissions: Cursor lists
-  permissive open-source plugins only, and Anthropic's directory refuses a
-  plugin without one. Once chosen: add the `LICENSE` file, set
-  `"license": "<SPDX id>"` in `packaging/source.json` (`build.mjs` then
-  emits it into every manifest that takes a license), add `license:` to
-  each skill's frontmatter, and make CI's directory-profile step blocking.
-- **Directory listing fields.** `.claude-plugin/plugin.json` now carries
-  `displayName`, `icon`, `supportUrl` (`https://sema.merget.ai/docs/help`)
-  and, since 0.8.2, `documentationUrl`.
-  Still to add to `listing` in `source.json` once their pages load:
+- **Directory listing fields.** `.claude-plugin/plugin.json` carries
+  `displayName`, `icon`, `supportUrl` (`https://sema.merget.ai/docs/help`),
+  `documentationUrl` (since 0.8.2), and since 0.8.3 `license`,
   `privacyPolicyUrl` (`https://merget.ai/legal/privacy-statement`) and
-  `termsOfServiceUrl` (`https://merget.ai/legal/terms-of-service`), written
-  in MergetAI/merget-web (`src/legal/`) but not served, since `merget.ai`
-  still redirects every `/legal/*` path to its home page. Security is
-  `https://sema.merget.ai/docs/security`, live.
+  `termsOfServiceUrl` (`https://merget.ai/legal/api-terms`, the API and
+  Agent Terms). The two legal pages are published by MergetAI/merget-web
+  (`src/legal/`); until that lands on `merget.ai`, the URLs resolve to its
+  home page, so confirm they load before a directory or Cursor submission.
+  The security policy is `SECURITY.md` here and
+  `https://merget.ai/legal/vulnerability-disclosure`.
 - **`.cursor-plugin/plugin.json`**: one more generated file, added only if
   Cursor's test asks for it (see Submissions).
 - **Registry description.** `server.json` takes the 100-character `summary`

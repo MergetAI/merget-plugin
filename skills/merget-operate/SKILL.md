@@ -1,6 +1,7 @@
 ---
 name: merget-operate
 description: Operates Merget as its dashboard does, short of an owner's steps, through the `merget` MCP server — repository settings, the merge queue (`merget_queue_get`, `merget_batch`, `merget_queue_action`), runs, analytics, the organization and its members (read-only), installation re-checks, validation secrets and the docs. Use when the user asks to change a Merget setting (mode, target branch, merge method, batching, passing lane, Layer 2, validation, generated files, CI checks, C parsing, the verified branch), to retry, hold or release a pull request, merge what's ready, land, merge anyway over failing CI, cancel a land request, fix a failed batch, resolve a pull request's conflicts for merge time, dismiss a finding, for runs, analytics, credits, members, repository secrets or the docs; and when asked to pause or resume a queue, rename the organization, change its billing, change members, organization secrets or strict protection, which stay the human's. First setup is merget-setup's; findings are merget-pr's.
+license: Apache-2.0
 compatibility: "Needs Merget's MCP server (merget, https://sema.merget.ai/mcp) connected and signed in."
 ---
 
