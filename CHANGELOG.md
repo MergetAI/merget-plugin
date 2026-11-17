@@ -32,6 +32,35 @@ names or values only:
 The version header became `Merget-Api-Version` at the same time;
 `Sema-Api-Version` comes beside it until a later Merget release drops it.
 
+## 0.8.3 — 2026-11-04
+
+Licensed and listed. Needs no particular Merget release: the server and the
+skills are 0.8.2's.
+
+- **Apache-2.0.** The repository carries a `LICENSE` (Apache License,
+  Version 2.0, Copyright 2026 Merget, Inc.) and a `NOTICE`;
+  `packaging/source.json` sets `"license": "Apache-2.0"`, which `build.mjs`
+  writes into `.claude-plugin/plugin.json`, the marketplace entry, the root
+  `plugin.json` and `.antigravity-plugin/plugin.json` (`server.json` has no
+  license field); each skill's frontmatter says `license: Apache-2.0`. This
+  clears the directory's `LICENSE_MISSING` refusal and Cursor's open-source
+  requirement.
+- **Listing links.** `.claude-plugin/plugin.json` gains `privacyPolicyUrl`
+  (`https://merget.ai/legal/privacy-statement`) and `termsOfServiceUrl`
+  (`https://merget.ai/legal/api-terms`, the API and Agent Terms that govern
+  an agent acting through the plugin), from `listing` in `source.json`,
+  beside the existing `documentationUrl`. Clears `PRIVACY_URL_MISSING`.
+- **Security policy and contributing.** `SECURITY.md` (reports to
+  security@merget.ai; the published policy is
+  `https://merget.ai/legal/vulnerability-disclosure`) and `CONTRIBUTING.md`
+  (every commit signed off under the Developer Certificate of Origin 1.1).
+- **README.** A Legal section: the license, the Terms of Service and the
+  API and Agent Terms, the Privacy Statement, support@merget.ai and the
+  security policy.
+- **CI.** The directory-profile step of `validate.yml`,
+  `claude plugin validate . --profile directory`, now fails the job: with
+  the license and the privacy URL in place it passes.
+
 ## 0.8.2 — 2026-11-02
 
 Antigravity gets the server. Needs no particular Merget release.

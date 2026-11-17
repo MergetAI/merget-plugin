@@ -1,6 +1,7 @@
 ---
 name: merget-pr
 description: Reads and interprets Merget's analysis of a GitHub pull request (findings, verdict, brief, queue position, enforcement state, credits) through the `merget` MCP server. Use when the user mentions Merget, a Merget check, a Merget finding or comment on a PR, a merge queue verdict, "would block", blocking or advisory findings, broken references, interference between branches, Layer 1 / Layer 2 findings, provenance (precise / syntactic), shadowed or suppressed findings, review findings, textual conflicts (with the target or with a pull request ahead in the queue), a merge brief, queue rank or position, queue enforcement, or asks whether a pull request is safe to merge, why a PR is blocked or held, what Merget found on a PR, what to fix before merging, or what will break when a PR lands, or what a PR cost in Merget credits; also use before reviewing, fixing, rebasing or merging a pull request in a repository where Merget is installed.
+license: Apache-2.0
 compatibility: "Needs Merget's MCP server (merget, https://sema.merget.ai/mcp) connected and signed in."
 ---
 

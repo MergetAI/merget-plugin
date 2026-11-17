@@ -302,3 +302,25 @@ rules, or user-facing copy names a client-specific tool prefix; with
 a version bump. `node packaging/build.mjs --validate` checks the generated
 files against the schemas pinned in `packaging/schemas/`.
 [RELEASING.md](RELEASING.md) says how a version is cut.
+
+## Legal
+
+This repository's code and skills are licensed under the
+[Apache License, Version 2.0](LICENSE); see [NOTICE](NOTICE) for the
+copyright and trademark notices. The Merget service the plugin connects to
+is a separate thing, used under Merget's
+[Terms of Service](https://merget.ai/legal/terms-of-service) and
+[API and Agent Terms](https://merget.ai/legal/api-terms) (what an agent
+acting as you may do, and the scopes it is granted). How Merget handles the
+data the plugin sends and receives is in the
+[Privacy Statement](https://merget.ai/legal/privacy-statement); every legal
+document is listed at [merget.ai/legal](https://merget.ai/legal).
+
+Questions about the plugin or the service go to
+[support@merget.ai](mailto:support@merget.ai). Security reports go to
+[security@merget.ai](mailto:security@merget.ai), never to a public issue:
+[SECURITY.md](SECURITY.md) is this repository's security policy, and the
+full vulnerability disclosure policy is at
+[merget.ai/legal/vulnerability-disclosure](https://merget.ai/legal/vulnerability-disclosure).
+Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md), which asks for a
+Developer Certificate of Origin sign-off on every commit.

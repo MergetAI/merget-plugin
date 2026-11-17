@@ -1,0 +1,17 @@
+Merget plugin for coding agents
+Copyright 2026 Merget, Inc.
+
+This product includes software developed at Merget, Inc.
+(https://merget.ai).
+
+Licensed under the Apache License, Version 2.0; see LICENSE.
+
+"Merget" and the Merget logo are trademarks of Merget, Inc. The Apache
+License does not grant permission to use them, except as needed to
+describe the origin of this software and as the trademark guidelines at
+https://merget.ai/legal/trademark-guidelines allow.
+
+This plugin connects to the Merget service, whose use is governed by the
+Terms of Service (https://merget.ai/legal/terms-of-service) and the API and
+Agent Terms (https://merget.ai/legal/api-terms). The license above covers
+this repository's code and skills, not the service.

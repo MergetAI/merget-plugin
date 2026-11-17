@@ -16,6 +16,7 @@
     "code-graph",
     "github"
   ],
+  "license": "Apache-2.0",
   "logo": "assets/logo.svg",
   "name": "merget",
   "repository": "https://github.com/MergetAI/merget-plugin",
@@ -24,5 +25,5 @@
     "Is this pull request safe to merge?",
     "What is waiting in the merge queue?"
   ],
-  "version": "0.8.2"
+  "version": "0.8.3"
 }

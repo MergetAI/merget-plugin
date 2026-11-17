@@ -1,6 +1,7 @@
 ---
 name: merget-setup
 description: Sets Merget up for the user, from the first call to a repository Merget works on, through the `merget` MCP server — who the agent acts for and with which permissions (`merget_status`), handing the human the dashboard page where they connect GitHub (the next step `merget_status` names; an owner's step, never an agent's), re-checking an installation (`merget_installation_sync`), enabling a first repository (`merget_repos_list`, `merget_repo_update`) and choosing its automation mode from the readiness verdict (`merget_repo_settings_get`). Use when the user asks to set up, onboard, connect or install Merget, to connect GitHub to Merget, to enable Merget on a repository, to choose advisory, queue or autonomous mode, where Merget's setup stands or what to do next, or why Merget shows no repositories; when a setup prompt from sema.merget.ai says so; and when a Merget tool answers insufficient_scope, agent_scope_disabled, agent_access_disabled, not_a_member or no_organization.
+license: Apache-2.0
 compatibility: "Needs Merget's MCP server (merget, https://sema.merget.ai/mcp) connected and signed in."
 ---
 

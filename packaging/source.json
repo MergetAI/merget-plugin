@@ -16,10 +16,13 @@
     "code-graph",
     "github"
   ],
+  "license": "Apache-2.0",
   "listing": {
     "documentationUrl": "https://sema.merget.ai/docs/coding-agents",
     "icon": "./assets/logo.png",
-    "supportUrl": "https://sema.merget.ai/docs/help"
+    "privacyPolicyUrl": "https://merget.ai/legal/privacy-statement",
+    "supportUrl": "https://sema.merget.ai/docs/help",
+    "termsOfServiceUrl": "https://merget.ai/legal/api-terms"
   },
   "logo": "assets/logo.svg",
   "marketplace": {
@@ -42,5 +45,5 @@
     "What is waiting in the merge queue?"
   ],
   "summary": "Merget for coding agents: set up the merge queue, operate it, and read its findings and code graphs.",
-  "version": "0.8.2"
+  "version": "0.8.3"
 }
