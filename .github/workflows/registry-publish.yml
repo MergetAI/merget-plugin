@@ -1,11 +1,17 @@
-# Publishes server.json to the official MCP Registry. Run it by hand after a
-# release: the registry namespace ai.merget/merget is proven by a DNS TXT
-# record on merget.ai, and the Ed25519 private key that signs that proof is
+# Publishes server.json to the official MCP Registry. release.yml calls it once
+# a new version's release exists; run it by hand only to retry a publish that
+# failed (the registry takes each version once, so a second publish of the
+# same version is refused). The namespace ai.merget/merget is proven by a DNS
+# TXT record on merget.ai, and the Ed25519 private key that signs that proof is
 # the MCP_PUBLISHER_TOKEN secret (the key's hex, as `mcp-publisher login dns
 # --private-key` takes it). RELEASING.md has the one-time setup.
 name: Publish to the MCP Registry
 
 on:
+  workflow_call:
+    secrets:
+      MCP_PUBLISHER_TOKEN:
+        required: true
   workflow_dispatch:
 
 permissions:

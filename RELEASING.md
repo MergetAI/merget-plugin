@@ -43,9 +43,12 @@ landing on `main`; CI tags it and publishes it.
    tags it and creates a GitHub release whose notes are the CHANGELOG
    section and whose asset is a zip of the plugin (without `.git`, `.github`
    and `packaging/schemas`).
-7. For the MCP Registry, run **Publish to the MCP Registry** under Actions
-   (`registry-publish.yml`, manual). It publishes `server.json` as
-   `ai.merget/merget`.
+7. The same run publishes `server.json` to the MCP Registry as
+   `ai.merget/merget`: its `registry` job calls `registry-publish.yml` once
+   the release exists, and is skipped when nothing was released. If that job
+   fails, run **Publish to the MCP Registry** under Actions by hand; the
+   registry takes each version once, so a run after a success is refused and
+   changes nothing.
 
 ## Manual checks
 
@@ -331,8 +334,8 @@ What agy 1.4.12 does with this repository (2026-11-02, Linux, scratch home):
 
 ### OpenAI's directory and the MCP Registry
 
-The MCP Registry is `registry-publish.yml` after the one-time DNS setup
-above. OpenAI's directory takes the release zip `release.yml` attaches and
+The MCP Registry is `registry-publish.yml`, which `release.yml` runs after
+each release, given the one-time DNS setup above. OpenAI's directory takes the release zip `release.yml` attaches and
 needs the server to answer `/.well-known/openai-apps-challenge` with a
 configured value; it does not need a UserInfo endpoint. Its submission notes
 ask for `extensions["com.openai"].auth` in the Agent Plugins `mcp.json`,
@@ -347,9 +350,9 @@ schema pair from `--validate`.
   `documentationUrl` (since 0.8.2), and since 0.8.3 `license`,
   `privacyPolicyUrl` (`https://merget.ai/legal/privacy-statement`) and
   `termsOfServiceUrl` (`https://merget.ai/legal/api-terms`, the API and
-  Agent Terms). The two legal pages are published by MergetAI/merget-web
-  (`src/legal/`); until that lands on `merget.ai`, the URLs resolve to its
-  home page, so confirm they load before a directory or Cursor submission.
+  Agent Terms). The legal pages are published by MergetAI/merget-web
+  (`src/legal/`) and load on `merget.ai` since November 2026; confirm they
+  still load before a directory or Cursor submission.
   The security policy is `SECURITY.md` here and
   `https://merget.ai/legal/vulnerability-disclosure`.
 - **`.cursor-plugin/plugin.json`**: one more generated file, added only if
