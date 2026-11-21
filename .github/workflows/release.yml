@@ -15,6 +15,8 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.version.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -78,3 +80,15 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "merget $VERSION" \
             --notes-file release-notes.md
+
+  # The MCP Registry gets each new version once its release exists. A release
+  # created with the workflow's own token starts no other workflow, so the
+  # publish is called from here instead of listening for the release.
+  registry:
+    needs: release
+    if: needs.release.outputs.changed == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/registry-publish.yml
+    secrets:
+      MCP_PUBLISHER_TOKEN: ${{ secrets.MCP_PUBLISHER_TOKEN }}
