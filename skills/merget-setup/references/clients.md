@@ -2,7 +2,7 @@
 
 Merget's MCP server is `https://sema.merget.ai/mcp`, named `merget` wherever a client asks for a name. Merget's plugin — repository `MergetAI/merget-plugin`, marketplace `merget-queue`, plugin id `merget@merget-queue` — ships that server and the four skills (`merget-setup`, `merget-operate`, `merget-pr`, `merget-graph`) in one install for the agents that take plugins; the others take the server by hand and the skills through the `skills` CLI. Every step below was checked against the vendor's documentation; where a vendor documents no step, this page says so rather than guessing.
 
-The tools carry the names Merget's MCP server gives them (`merget_status`, …); a client may show them under a prefix of its own, named per client below. Signing in is the human's: the first tool call (or the client's sign-in button) opens Merget's sign-in in the browser, where they choose the permissions this agent gets and the organization. Merget's server registers OAuth clients dynamically, so no client id or secret is ever typed. An agent without a shell hands the commands below to the human.
+The tools carry the names Merget's MCP server gives them (`merget_status`, …); a client may show them under a prefix of its own, named per client below. Signing in is the human's: the first tool call (or the client's sign-in button) opens Merget's sign-in in the browser, where they sign in (or choose **Create account**: a new account needs nothing else first), then choose the permissions this agent gets and the organization. Merget's server registers OAuth clients dynamically, so no client id or secret is ever typed. An agent without a shell hands the commands below to the human.
 
 ## Claude Code
 

@@ -32,6 +32,32 @@ names or values only:
 The version header became `Merget-Api-Version` at the same time;
 `Sema-Api-Version` comes beside it until a later Merget release drops it.
 
+## 0.9.0 — 2026-11-25
+
+Setup from the prompt alone. **Needs the Merget release that adds
+`merget_setup_wait` and `merget_status`'s `repo`, and the dashboard's setup
+page; release this after both are live.**
+
+- **No account first.** The `merget-setup` skill no longer stops a human
+  with no Merget account: signing in at the agent's first call creates one
+  (**Create account** on Merget's sign-in page), with an organization of its
+  own.
+- **The setup page.** `merget_status` takes `repo` (`owner/name`, from
+  `git remote get-url origin`); for `install_github_app` and `link_github`
+  its `next_step.url` is then Merget's setup page for that repository, whose
+  one button links the human's GitHub account, installs (or connects) the
+  GitHub App and turns the repository on in Queue mode. The skill says what
+  Queue mode does before handing the page over. A `repo` that is not
+  `owner/name` answers 400 `invalid_repo`.
+- **`merget_setup_wait`.** The skill waits with it instead of asking the
+  human to say when they are done: `{org, state?, seconds?}` (default 25,
+  at most 45), answering `{changed, waited_seconds, next}`. The
+  `merget-operate` skill's tool lists name it.
+- **Queue with a yes.** When GitHub is already connected
+  (`no_enabled_repos`), the skill offers Queue mode, gets a yes and names
+  the mode on `merget_repo_update`, rather than enabling in Advisory and
+  asking again.
+
 ## 0.8.3 — 2026-11-04
 
 Licensed and listed. Needs no particular Merget release: the server and the

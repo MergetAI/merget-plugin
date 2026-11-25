@@ -27,8 +27,9 @@ user belongs to exactly one; otherwise the call answers 400
 listing each as `{slug, display_name}`: ask the human which one by name, and
 pass its slug. `repo` is a repository as GitHub names it, `owner/name`.
 
-A call runs under a deadline: 20 s, 30 s for `merget_status`, a minute for the
-tools that read GitHub live (`merget_repo_settings_get`, `merget_repo_update`,
+A call runs under a deadline: 20 s, 30 s for `merget_status`, a minute for
+`merget_setup_wait` and for the tools that read GitHub live
+(`merget_repo_settings_get`, `merget_repo_update`,
 `merget_installation_sync`). A write that answers `timeout` may still have
 happened: read the state before repeating it.
 
@@ -37,13 +38,14 @@ happened: read the state before repeating it.
 | Argument | Type | Required | Meaning |
 |----------|------|----------|---------|
 | `org` | slug | no | read this organization only (403 `not_a_member` when the user is not one) |
+| `repo` | `owner/name` | no | the repository you are working in (from `git remote get-url origin`); a step whose page is Merget's setup page links it with this repository, which the page turns on in Queue mode. It looks nothing up; anything but `owner/name` answers 400 `invalid_repo` |
 
 ```json
 {"identity": {"sub": "…", "handle": "octo", "agent": true, "client_id": "dcr_…", "consented_org": "u-7d9b0c3e", "consented_org_name": "Acme"},
  "scopes": ["merget:org.read", "merget:repos.write", "offline_access"],
  "orgs": [{"slug": "u-7d9b0c3e", "role": "member", "display_name": "Acme", "agent_access": true, "agent_scopes": null,
            "permissions": ["merget:org.read", "merget:repos.write"],
-           "setup": {"state": "no_installation", "next_step": {"action": "install_github_app", "description": "…", "url": "https://sema.merget.ai/orgs/u-7d9b0c3e/settings/github"},
+           "setup": {"state": "no_installation", "next_step": {"action": "install_github_app", "description": "…", "url": "https://sema.merget.ai/orgs/u-7d9b0c3e/setup?repo=acme%2Fweb&from=agent", "human": true},
                      "counts": {…}, "github": {…}, "access": {…}}}],
  "next_step": {"action": "install_github_app", "description": "…", "url": "…", "org": "u-7d9b0c3e", "org_name": "Acme"}}
 ```
@@ -69,10 +71,37 @@ Merget starts no work there, and the top-level `next_step` says
 `credits_exhausted`. States and actions:
 [setup-states.md](setup-states.md).
 
-No tool connects GitHub. For `install_github_app`, `next_step.url` is the
-organization's Settings › GitHub page in Merget's dashboard, where an owner
-of the organization installs Merget's GitHub App or connects an installation
-that already exists; give the human that page.
+No tool connects GitHub. For `install_github_app` and `link_github`,
+`next_step.url` is the organization's setup page in Merget's dashboard. Its
+one button links the human's GitHub account if needed, installs Merget's
+GitHub App (an owner's step) or connects an installation that already
+exists, and, when the URL names a repository, turns it on in Queue mode. Say
+what Queue mode does, give the human that page, and wait with
+`merget_setup_wait`.
+
+## `merget_setup_wait` — `merget:org.read`, read-only
+
+Waits while the human takes a setup step on Merget's setup page, so you need
+not ask them to say when they are done. It reads Merget's own records every
+two seconds, never GitHub, and returns as soon as the organization's setup
+moves on (an installation connected, their GitHub account linked, a
+repository turned on), or when `seconds` run out.
+
+| Argument | Type | Required | Meaning |
+|----------|------|----------|---------|
+| `org` | slug | yes | the organization whose setup the human is taking |
+| `state` | string | no | the `setup.state` `merget_status` last gave for it: a setup already past it answers `changed: true` at once |
+| `seconds` | integer | no | how long to wait at most: default 25, at most 45 |
+
+```json
+{"changed": false, "waited_seconds": 25, "next": "call merget_setup_wait again"}
+```
+
+`changed: true` (`next`: `call merget_status`) means read the state again
+with `merget_status` for the next step; `false` means nothing moved yet:
+call it again while the human is still on the page. Stop waiting when the
+human says they stopped, or after a few minutes with nothing changed, and
+ask what they saw.
 
 ## `merget_installation_sync` — `merget:repos.write`
 
