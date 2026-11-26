@@ -40,7 +40,7 @@ This skill teaches the tools that exist today. **If a tool, argument or field is
 | `merget_secrets` | `merget:repos.write` | list, set, delete a repository's validation secrets |
 | `merget_docs` | `merget:org.read` | a page of Merget's docs, or the list |
 
-`merget_status` is the `merget-setup` skill's; no tool takes an owner's step ([Human-only](#human-only)). Arguments and answers → [references/tools.md](references/tools.md).
+`merget_status` and `merget_setup_wait` are the `merget-setup` skill's; no tool takes an owner's step ([Human-only](#human-only)). Arguments and answers → [references/tools.md](references/tools.md).
 
 ## Repository settings
 

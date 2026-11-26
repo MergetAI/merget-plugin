@@ -25,18 +25,18 @@ Common arguments:
 - `cursor` — the previous page's `next_cursor`. `limit` — the page size.
 - `from`, `to` — RFC 3339, or `YYYY-MM-DD` (UTC midnight).
 
-Deadlines: 20 s; 30 s for `merget_status`; a minute for the tools that read
-GitHub live (`merget_repo_settings_get`, `merget_repo_update`,
-`merget_queue_action`, `merget_installation_sync`). A write that answers
+Deadlines: 20 s; 30 s for `merget_status`; a minute for `merget_setup_wait`
+and the tools that read GitHub live (`merget_repo_settings_get`,
+`merget_repo_update`, `merget_queue_action`, `merget_installation_sync`). A write that answers
 `timeout` may still have happened: read the state before repeating it.
 
 | Tool | Read-only | Destructive | Idempotent |
 |------|-----------|-------------|------------|
-| `merget_status`, `merget_repos_list`, `merget_repo_settings_get`, `merget_queues_overview`, `merget_queue_get`, `merget_batch`, `merget_queue_code`, `merget_runs_list`, `merget_run_get`, `merget_analytics`, `merget_org_get`, `merget_docs` | yes | no | yes |
+| `merget_status`, `merget_setup_wait`, `merget_repos_list`, `merget_repo_settings_get`, `merget_queues_overview`, `merget_queue_get`, `merget_batch`, `merget_queue_code`, `merget_runs_list`, `merget_run_get`, `merget_analytics`, `merget_org_get`, `merget_docs` | yes | no | yes |
 | `merget_repo_update`, `merget_installation_sync`, `merget_secrets` | no | yes | yes |
 | `merget_queue_action` | no | yes | no |
 
-`merget_status` is described in the `merget-setup` skill. No tool takes an
+`merget_status` and `merget_setup_wait` are described in the `merget-setup` skill. No tool takes an
 organization owner's step — connecting GitHub, pausing and resuming merges,
 the organization's name, plan, spending cap and members, organization-wide secrets,
 turning strict protection off: an agent never acts as an owner (SKILL.md,
