@@ -135,6 +135,13 @@ Answer: `{items, next_cursor, policy_schema}`. Each item is a repository:
 `target_branch` (null = the default branch), `queue_label`, `agent_access`
 (`off` | `findings` | `findings_and_graph`), `policy` (the customer view),
 `paused_at`, `paused_by`, `pause_reason`, `viewer_permission`.
+`mode` is the mode the repository stores, `advisory` | `queue` |
+`autonomous`: the one it runs in while `enabled` is true, and the one
+`merget_repo_update` turns it on in when `enabled: true` comes without
+`mode`. A repository never turned on usually stores `queue` (`advisory`, on
+a Merget release from before Queue was the starting mode); one that was on
+before keeps its own. Offer the human the mode this field shows, never one
+you assume (SKILL.md, step 4).
 `viewer_permission` is the human's GitHub permission on the repository,
 `{pull, triage, push, maintain, admin}` as booleans, or null when Merget has
 no current answer; every change re-checks it live. A repository whose agent
@@ -151,7 +158,7 @@ as above, its customer policy and schema (the `merget-operate` skill), and:
 
 | `readiness` field | Meaning |
 |-------------------|---------|
-| `modes` | `{advisory, queue, autonomous}`, each `{ready, needs, recommended}`. `needs` is what `merget_repo_update` would refuse that mode without (only ever `contents:write`); `recommended` is `[{permission, reason}]` (`administration:write`, `actions:write`), never a refusal. Advisory is always ready. |
+| `modes` | `{advisory, queue, autonomous}`, each `{ready, needs, recommended}`. `needs` is what `merget_repo_update` would refuse that mode without, whether a call sets it or turns the repository on in it (only ever `contents:write`); `recommended` is `[{permission, reason}]` (`administration:write`, `actions:write`, `workflows:write`), never a refusal. Advisory is always ready. |
 | `installation` | `{id, account_login, account_type, status, repository_selection, permissions}`; `permissions` as last read from GitHub (`{}` until read) |
 | `viewer_permission` | the human's GitHub permission on the repository, as above |
 | `queue_enforcement` | `{status, reasons, …}`: `enforced` (GitHub makes manual merges follow Merget's order), `not_enforced`, `unknown` (not verified in the last ten minutes) or `not_applicable` (advisory mode) |
@@ -165,8 +172,8 @@ as above, its customer policy and schema (the `merget-operate` skill), and:
 | Argument | Type | Required | Meaning |
 |----------|------|----------|---------|
 | `repo` | `owner/name` | yes | |
-| `enabled` | boolean | no | turn Merget on or off for the repository |
-| `mode` | `advisory` \| `queue` \| `autonomous` | no | queue and autonomous need the App's Contents: write (409 `permission_missing`) |
+| `enabled` | boolean | no | turn Merget on or off for the repository; `true` without `mode` turns it on in the mode it stores (`merget_repos_list`'s `mode`), so send `mode` with it |
+| `mode` | `advisory` \| `queue` \| `autonomous` | no | advisory (comments only), queue (Merget orders and certifies; a person merges) or autonomous (Merget merges). Queue and autonomous need the App's Contents: write (409 `permission_missing` otherwise, whether the call names the mode or the repository stores it; `merget_repo_settings_get`'s readiness says) |
 | `target_branch` | string \| null | no | the branch Merget queues into; null resets it to the default branch |
 | `queue_label` | string (1–100) | no | the repository's queue label (default `merget:queue`) |
 | `resolution_scope` | `blocking` \| `all_findings` | no | shortcut for `policy.resolution_scope`; not together with `policy` |
@@ -177,6 +184,14 @@ the human's account (403 `github_permission_required`), and the
 repository's agent access at `findings_and_graph`. `agent_access` is not an
 argument: an agent sending it is refused (403 `session_required`). Answers
 the repository as stored now, with `policy_schema`.
+
+Before turning a repository on, tell the human what the mode lets Merget do
+(in queue and autonomous it may push fixes to pull request branches, and
+creates and deletes temporary `merget/queue/` branches for CI), have them
+confirm, and send that mode with `enabled: true`. A refusal such as 409
+`permission_missing` or `repository_limit` changes nothing: a repository
+whose enable is refused stays off. A `timeout` may still have turned it on:
+read `merget_repos_list` before trying again.
 
 Every change to a repository's settings prepares its queued pull requests
 again and voids a standing land request; sending the values already stored

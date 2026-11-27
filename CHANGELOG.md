@@ -41,7 +41,7 @@ page; release this after both are live.**
 - **No account first.** The `merget-setup` skill no longer stops a human
   with no Merget account: signing in at the agent's first call creates one
   (**Create account** on Merget's sign-in page), with an organization of its
-  own.
+  own, and the human accepts the Terms when Merget asks.
 - **The setup page.** `merget_status` takes `repo` (`owner/name`, from
   `git remote get-url origin`); for `install_github_app` and `link_github`
   its `next_step.url` is then Merget's setup page for that repository, whose
@@ -51,12 +51,45 @@ page; release this after both are live.**
   `owner/name` answers 400 `invalid_repo`.
 - **`merget_setup_wait`.** The skill waits with it instead of asking the
   human to say when they are done: `{org, state?, seconds?}` (default 25,
-  at most 45), answering `{changed, waited_seconds, next}`. The
-  `merget-operate` skill's tool lists name it.
-- **Queue with a yes.** When GitHub is already connected
-  (`no_enabled_repos`), the skill offers Queue mode, gets a yes and names
-  the mode on `merget_repo_update`, rather than enabling in Advisory and
-  asking again.
+  at most 45), answering `{changed, waited_seconds, next}`. The page links,
+  installs and turns the repository on in turn, so while the human is on it
+  the skill waits again at a state short of the end rather than handing the
+  page over again or asking for a mode. The `merget-operate` skill's tool
+  lists name it.
+- **The mode, with a yes.** When GitHub is already connected
+  (`no_enabled_repos`), the skill offers the mode `merget_repos_list` shows
+  for the repository, which is the mode it stores: usually `queue` for one
+  never turned on, its own for one that was on before. It says what that
+  mode does, always offers `advisory` (comments only) too, gets the human's
+  yes and names the chosen mode on `merget_repo_update` with
+  `enabled: true`, once `merget_repo_settings_get` reads that mode ready.
+  It no longer turns a repository on first and asks about the mode after:
+  an enable that names no mode starts whatever mode the repository stores.
+  The skill reads the mode and never assumes it, so it holds on either side
+  of the Merget release that makes Queue the mode a repository starts in:
+  before it, the list shows `advisory` for one never turned on, and that is
+  what the skill offers. The tools references of `merget-setup` and
+  `merget-operate` say what `enabled: true` without `mode` does, and
+  `merget-setup` that a refused enable (409 `permission_missing`: queue or
+  autonomous without the App's Contents: write) leaves the repository off.
+  `merget-operate`'s rule 3 lists turning a repository on, changing its mode
+  or target branch and setting a secret among the changes to confirm first,
+  as the API and Agent Terms ask. Step 5 no longer recommends advisory to
+  start, and asks for the human's yes to every mode it sets, saying what
+  leaving advisory lets Merget write; the mode table's `queue` row names the
+  temporary `merget/queue/` branches Merget creates and deletes for CI.
+- **Read after the setup page.** Once the state reads `no_open_prs` or
+  `ready`, the skill reads `merget_repos_list` before its closing checklist
+  and reports the mode the list shows, rather than taking the named
+  repository to be on in Queue mode: the page leaves a repository that was
+  already on in the mode it had, and lets the human pick repositories and a
+  mode when it cannot find the one named.
+- **Two answers the skills did not name.** `merget-setup` and
+  `merget-operate` list 409 `repository_limit` (`plan`, `allowed`, `used`,
+  `settings_path`), which refuses turning a repository on once the
+  organization has as many enabled as the Free plan allows. `merget-setup`
+  names `workflows:write` among the `recommended` permissions of a
+  readiness verdict.
 
 ## 0.8.3 — 2026-11-04
 
