@@ -25,5 +25,5 @@
     "Is this pull request safe to merge?",
     "What is waiting in the merge queue?"
   ],
-  "version": "0.9.0"
+  "version": "0.9.1"
 }
