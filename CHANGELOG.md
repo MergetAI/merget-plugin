@@ -32,6 +32,44 @@ names or values only:
 The version header became `Merget-Api-Version` at the same time;
 `Sema-Api-Version` comes beside it until a later Merget release drops it.
 
+## 0.9.1 — 2026-11-27
+
+The mode a repository turns on in, with a yes. **Release this before the
+Merget release that makes Queue the mode a repository starts in** (an
+enable that names no mode then starts Queue).
+
+- **The mode, with a yes.** When GitHub is already connected
+  (`no_enabled_repos`), `merget-setup` offers the mode `merget_repos_list`
+  shows for the repository, which is the mode it stores: usually `queue`
+  for one never turned on, its own for one that was on before. It says what
+  that mode does, always offers `advisory` (comments only) too, gets the
+  human's yes and names the chosen mode on `merget_repo_update` with
+  `enabled: true`, once `merget_repo_settings_get` reads that mode ready.
+  0.9.0 always offered and named `queue`. The skill reads the mode and
+  never assumes it, so it holds on either side of that Merget release.
+  Step 5 no longer recommends advisory to start, and asks for the human's
+  yes to every mode it sets, saying what leaving advisory lets Merget
+  write; the mode table's `queue` row names the temporary `merget/queue/`
+  branches Merget creates and deletes for CI. The tools references of both
+  skills say what `enabled: true` without `mode` does, and that a refused
+  enable (409 `permission_missing`) leaves the repository off.
+- **Confirm first.** `merget-operate`'s rule 3 lists turning a repository
+  on, changing its mode or target branch and setting a secret among the
+  changes to confirm first, as the API and Agent Terms ask.
+- **The setup page.** While the human is on it, the skill waits again at a
+  state short of the end rather than handing the page over again or asking
+  for a mode. Once the state reads `no_open_prs` or `ready`, it reads
+  `merget_repos_list` before its closing checklist and reports the mode the
+  list shows: the page leaves a repository that was already on in the mode
+  it had, and lets the human pick repositories and a mode when it cannot
+  find the one named. The human accepts the Terms when Merget asks.
+- **Two answers the skills did not name.** Both skills list 409
+  `repository_limit` (`plan`, `allowed`, `used`, `settings_path`), which
+  refuses turning a repository on once the organization has as many enabled
+  as the Free plan allows. `merget-setup` names `workflows:write` among the
+  `recommended` permissions of a readiness verdict, and reads a timed-out
+  enable back before trying again.
+
 ## 0.9.0 — 2026-11-25
 
 Setup from the prompt alone. **Needs the Merget release that adds

@@ -91,8 +91,8 @@ Answer: `{repo, policy, policy_schema, readiness}`. `policy` is the customer vie
 | Argument | Type | Meaning |
 |----------|------|---------|
 | `repo` | `owner/name` | **required** |
-| `enabled` | boolean | Merget on or off for the repository |
-| `mode` | `advisory` \| `queue` \| `autonomous` | queue and autonomous need the App's Contents: write (409 `permission_missing`) |
+| `enabled` | boolean | Merget on or off for the repository; `true` without `mode` turns it on in the mode it stores (`merget_repos_list`'s `mode`, usually `queue` for one never turned on): say what that mode lets Merget do, get the user's yes and send `mode` with it (the `merget-setup` skill, step 4) |
+| `mode` | `advisory` \| `queue` \| `autonomous` | queue and autonomous need the App's Contents: write (409 `permission_missing`, whether the call names the mode or the repository stores it) |
 | `target_branch` | string \| null | the branch Merget queues into; null = the default branch |
 | `queue_label` | string (1–100) | the repository's queue label |
 | `resolution_scope` | `blocking` \| `all_findings` | shortcut for `policy.resolution_scope`; not together with `policy` |
